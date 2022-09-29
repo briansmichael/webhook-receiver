@@ -14,16 +14,4 @@
  *  limitations under the License.
  */
 
-package com.starfireaviation.webhookreceiver;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class WebhookReceiverApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+package com.starfireaviation.webhookreceiver.controller;

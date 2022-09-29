@@ -14,16 +14,21 @@
  *  limitations under the License.
  */
 
-package com.starfireaviation.webhookreceiver;
+package com.starfireaviation.webhookreceiver.controller;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootTest
-class WebhookReceiverApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
+@Slf4j
+@RestController
+@RequestMapping("/webhooks")
+public class WebhookController {
+    
+    @PostMapping(path = "/github")
+    public void github(@RequestBody final String requestBody) {
+        log.info("Webhook from GitHub received.  Payload: {}", requestBody);
+    }
 }
