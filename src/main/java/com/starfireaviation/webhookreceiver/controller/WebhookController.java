@@ -26,7 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/webhooks")
 public class WebhookController {
-    
+
+    /**
+     * Endpoint to receive webhooks from GitHub.
+     *
+     * @param requestBody webhook request body
+     */
     @PostMapping(path = "/github")
     public void github(@RequestBody final String requestBody) {
         log.info("Webhook from GitHub received.  Payload: {}", requestBody);

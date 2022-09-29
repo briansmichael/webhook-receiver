@@ -30,8 +30,8 @@ public class WebhookReceiverApplication {
      *
      * @param args arguments
      */
-    public static void main(String[] args) {
-		SpringApplication.run(WebhookReceiverApplication.class, args);
-	}
+    public static void main(final String[] args) {
+        SpringApplication.run(WebhookReceiverApplication.class, args);
+    }
 
 }
