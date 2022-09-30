@@ -17,6 +17,7 @@
 package com.starfireaviation.webhookreceiver.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,5 +36,15 @@ public class WebhookController {
     @PostMapping(path = "/github")
     public void github(@RequestBody final String requestBody) {
         log.info("Webhook from GitHub received.  Payload: {}", requestBody);
+    }
+
+    /**
+     * Endpoint to test application.
+     *
+     * @return success
+     */
+    @GetMapping()
+    public String github() {
+        return "success";
     }
 }
