@@ -16,6 +16,9 @@
 
 package com.starfireaviation.webhookreceiver.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.starfireaviation.webhookreceiver.model.GitHubResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,10 +26,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 @Slf4j
 @RestController
 @RequestMapping("/webhooks")
 public class WebhookController {
+
+    /**
+     * ObjectMapper.
+     */
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Endpoint to receive webhooks from GitHub.
@@ -36,6 +46,31 @@ public class WebhookController {
     @PostMapping(path = "/github")
     public void github(@RequestBody final String requestBody) {
         log.info("Webhook from GitHub received.  Payload: {}", requestBody);
+        try {
+            final GitHubResponse githubResponse = objectMapper.readValue(requestBody, GitHubResponse.class);
+            final int prNumber = githubResponse.getNumber();
+            final String application = githubResponse.getRepository().getName();
+            final Date mergedAt = githubResponse.getPullRequest().getMergedAt();
+            switch (githubResponse.getAction()) {
+                case "closed":
+                    if (mergedAt != null) {
+                        log.info("PR #{} was merged at {}", prNumber, mergedAt);
+                    } else {
+                        log.info("PR #{} was closed without being merged", prNumber);
+                    }
+                    break;
+                case "opened":
+                    final String branchName = githubResponse.getPullRequest().getHead().getRef();
+                    log.info("PR #{} opened on the {} application with branch name: {}",
+                            prNumber, application, branchName);
+                    break;
+                default:
+                    log.info("Unknown action.  Doing nothing");
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Error processing json string: {}.  Error message: {}", requestBody, e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
