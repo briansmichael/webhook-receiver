@@ -1,1 +1,5 @@
-
+webhooks:
+  enabled: false
+  host: ${SSH_HOST}
+  username: ${SSH_USERNAME}
+  password: ${SSH_PASSWORD}
