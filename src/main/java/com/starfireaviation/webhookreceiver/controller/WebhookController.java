@@ -69,7 +69,7 @@ public class WebhookController {
                 case "opened":
                     final String application = githubResponse.getRepository().getName();
                     final String branchName = githubResponse.getPullRequest().getHead().getRef();
-                    log.info("PR #{} opened on the '{}' application with branch name: {}",
+                    log.info("PR #{} opened on the {} application with branch name: {}",
                             prNumber, application, branchName);
                     break;
                 default:
