@@ -1,5 +1,14 @@
 webhooks:
   enabled: false
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: production
+webhooks:
+  enabled: true
   host: ${SSH_HOST}
   username: ${SSH_USERNAME}
   password: ${SSH_PASSWORD}

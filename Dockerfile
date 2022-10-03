@@ -3,4 +3,4 @@ WORKDIR /
 ARG VERSION
 ADD /target/webhook-receiver-$VERSION.jar app.jar
 EXPOSE 8080
-CMD java -jar app.jar
+CMD java -Dspring.profiles.active=production -jar app.jar
