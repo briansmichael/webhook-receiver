@@ -16,9 +16,12 @@
 
 package com.starfireaviation.webhookreceiver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GitHubResponse {
 
     /**
@@ -34,6 +37,7 @@ public class GitHubResponse {
     /**
      * PullRequest.
      */
+    @JsonProperty("pull_request")
     private PullRequest pullRequest;
 
     /**
@@ -45,4 +49,19 @@ public class GitHubResponse {
      * Sender.
      */
     private Sender sender;
+
+    /**
+     * Ref.
+     */
+    private String ref;
+
+    /**
+     * Before.
+     */
+    private String before;
+
+    /**
+     * After.
+     */
+    private String after;
 }

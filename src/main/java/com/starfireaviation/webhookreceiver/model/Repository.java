@@ -16,9 +16,12 @@
 
 package com.starfireaviation.webhookreceiver.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Repository {
 
     /**
@@ -29,6 +32,7 @@ public class Repository {
     /**
      * NodeId.
      */
+    @JsonProperty("node_id")
     private String nodeId;
 
     /**
@@ -39,6 +43,7 @@ public class Repository {
     /**
      * FullName.
      */
+    @JsonProperty("full_name")
     private String fullName;
 
 }

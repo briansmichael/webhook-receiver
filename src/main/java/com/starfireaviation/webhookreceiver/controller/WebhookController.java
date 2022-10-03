@@ -19,6 +19,7 @@ package com.starfireaviation.webhookreceiver.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starfireaviation.webhookreceiver.model.GitHubResponse;
+import com.starfireaviation.webhookreceiver.model.PullRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,18 +49,25 @@ public class WebhookController {
         log.info("Webhook from GitHub received.  Payload: {}", requestBody);
         try {
             final GitHubResponse githubResponse = objectMapper.readValue(requestBody, GitHubResponse.class);
+            String action = githubResponse.getAction();
+            if (action == null) {
+                action = "unknown";
+            }
             final int prNumber = githubResponse.getNumber();
-            final String application = githubResponse.getRepository().getName();
-            final Date mergedAt = githubResponse.getPullRequest().getMergedAt();
-            switch (githubResponse.getAction()) {
+            switch (action) {
                 case "closed":
-                    if (mergedAt != null) {
-                        log.info("PR #{} was merged at {}", prNumber, mergedAt);
-                    } else {
-                        log.info("PR #{} was closed without being merged", prNumber);
+                    final PullRequest pullRequest = githubResponse.getPullRequest();
+                    if (pullRequest != null) {
+                        Date mergedAt = pullRequest.getMergedAt();
+                        if (mergedAt != null) {
+                            log.info("PR #{} was merged at {}", prNumber, mergedAt);
+                        } else {
+                            log.info("PR #{} was closed without being merged", prNumber);
+                        }
                     }
                     break;
                 case "opened":
+                    final String application = githubResponse.getRepository().getName();
                     final String branchName = githubResponse.getPullRequest().getHead().getRef();
                     log.info("PR #{} opened on the {} application with branch name: {}",
                             prNumber, application, branchName);
@@ -68,7 +76,7 @@ public class WebhookController {
                     log.info("Unknown action.  Doing nothing");
             }
         } catch (JsonProcessingException e) {
-            log.error("Error processing json string: {}.  Error message: {}", requestBody, e.getMessage(), e);
+            log.error("Error processing json string.  Error message: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
