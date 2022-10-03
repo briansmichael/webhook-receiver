@@ -121,8 +121,7 @@ public class WebhookService {
         final String host = applicationProperties.getHost();
         final String user = applicationProperties.getUsername();
         final String password = applicationProperties.getPassword();
-        final String command1 = String.format("~/git/scripts/release.sh %s >> ~/release.log 2>&1 &", application);
-        //final String command1 = "ls -ltr";
+        final String command1 = String.format("~/git/scripts/release.sh %s", application);
         Session session = null;
         Channel channel = null;
         try {
