@@ -158,7 +158,7 @@ public class WebhookService {
                     Thread.sleep(SLEEP_DURATION);
                 } catch (Exception ee) { }
             }
-            log.info("Release command sent for {}", application);
+            log.info("Release command sent for {} to {}", application, host);
         } catch (Exception e) {
             log.error("Unable to perform release.  Message: {}", e.getMessage(), e);
         } finally {
